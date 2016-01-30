@@ -1,0 +1,106 @@
+<robot name="AL5D">
+	<link name="base_link">
+		<visual>
+			<geometry>
+				<cylinder length="0.06731" radius="0.097"/>
+			</geometry>
+			<origin xyz="0 0 0.033655" rpy="0 0 0"/>
+			<material name="black">
+				<color rgba="0 0 0 1"/>
+			</material>
+		</visual>
+	</link>
+	<link name="base_pan_link">
+	</link>
+	<link name="upper_arm_link">
+		<visual>
+			<geometry>
+				<box size="0.14605 0.067 0.024" />
+			</geometry>
+			<origin xyz="0.073025 0 0" rpy="0 0 0"/>
+			<material name="grey">
+				<color rgba="0.5 0.5 0.5 1"/>
+			</material>
+		</visual>
+	</link>
+	<link name="lower_arm_link">
+		<visual>
+			<geometry>
+				<cylinder length="0.187325" radius="0.0065"/>
+			</geometry>
+			<origin xyz="0.0936625 0 0" rpy="0 1.57 0"/>
+			<material name="grey"/>
+		</visual>
+	</link>
+	<link name="link3">
+		<visual>
+			<geometry>				
+				<box size="0.034 0.077 0.061" /> 
+			</geometry>
+			<origin xyz="0.017 -0.0125 -0.0095" rpy="0 0 0"/>
+			<material name="black">
+			</material>
+		</visual>
+	</link>
+	<link name="gripper">
+		<visual>
+			<geometry>
+				<box size="0.067 0.064 0.046" />
+			</geometry>
+			<origin xyz="0.033 0 -0.009" rpy="0 0 0"/>
+			<material name="yellow">
+				<color rgba="1 1 0 1"/>
+			</material>
+		</visual>
+	</link>
+	<link name="tool_center_point">
+	</link>
+	
+	
+	<joint name="base_pan" type="revolute">
+		<limit effort="1000.0" lower="0.0" upper="3.14" velocity="0.5"/>
+		<parent link="base_link" />
+		<child link="base_pan_link" />
+		<origin xyz="0 0 0.06731" rpy="0 0 -1.57" />
+		<axis xyz="0 0 1" />
+	</joint>
+
+	<joint name="shoulder_tilt" type="revolute">
+		<limit effort="1000.0" lower="0.17" upper="2.97" velocity="0.5"/>
+		<parent link="base_pan_link" />
+		<child link="upper_arm_link" />
+		<origin xyz="0 0 0" rpy="0 0 0" />
+		<axis xyz="0 -1 0" />
+	</joint>
+
+	<joint name="elbow_tilt" type="revolute">
+		<limit effort="1000.0" lower="0.52" upper="3.14" velocity="0.5"/>
+		<parent link="upper_arm_link" />
+		<child link="lower_arm_link" />
+		<origin xyz="0.14605 0 0" rpy="0 3.14 0" />
+		<axis xyz="0 -1 0" />
+	</joint>
+
+	<joint name="wrist_tilt" type="revolute">
+		<limit effort="1000.0" lower="0.0" upper="3.14" velocity="0.5"/>
+		<parent link="lower_arm_link" />
+		<child link="link3" />
+		<origin xyz="0.187325 0 0" rpy="0 1.57 0" />
+		<axis xyz="0 -1 0" />
+	</joint>
+
+	<joint name="wrist_rotate" type="revolute">
+		<limit effort="1000.0" lower="0.0" upper="3.14" velocity="0.5"/>
+		<parent link="link3" />
+		<child link="gripper" />
+		<origin xyz="0.034 0 0" rpy="-1.57 0 0" />
+		<axis xyz="1 0 0" />
+	</joint>
+	
+	<joint name="center_point" type="fixed">
+		<parent link="gripper" />
+		<child link="tool_center_point" />
+		<origin xyz="0.055 0 0" rpy="0 0 0" />
+	</joint>
+	
+</robot>
